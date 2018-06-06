@@ -1,0 +1,11 @@
+import no.*;
+import java.io.*;
+import java.util.BitSet;
+
+public class Programa {
+
+	public static void main(String[] args) {
+
+	}
+
+}

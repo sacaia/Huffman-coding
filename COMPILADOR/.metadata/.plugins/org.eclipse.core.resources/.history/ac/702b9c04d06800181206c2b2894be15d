@@ -1,0 +1,12 @@
+import no.*;
+import java.io.*;
+import java.util.BitSet;
+
+public class Programa {
+	private static BufferedReader teclado;
+
+	public static void main(String[] args) {
+		teclado = new BufferedReader(new InputStreamReader(System.in));
+	}
+
+}
