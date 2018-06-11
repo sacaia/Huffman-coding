@@ -1,0 +1,23 @@
+package arvore;
+
+import no.*;
+
+public class Arvore {
+	private No raiz;
+	
+	public Arvore(int cod, int qtd) throws Exception
+	{
+		raiz = new No(cod, qtd);
+	}
+	
+	public No getRaiz()
+	{
+		return this.raiz;
+	}
+	
+	public void setRaiz(No raiz)
+	{
+		this.raiz = raiz;
+	}
+	
+}

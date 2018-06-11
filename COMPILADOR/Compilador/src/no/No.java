@@ -1,16 +1,13 @@
 package no;
 
-public class No {
+public class No implements Comparable<No> {
 	protected No dir = null;
 	protected No esq = null;
 	protected int qtd;
 	protected int cod;
 	
-	public No (No dir, No esq, int qtd) throws Exception //construtor destinado aos nós não folhas
+	public No (No dir, No esq, int qtd) //construtor destinado aos nós não folhas
 	{
-		if (qtd < 1)
-			throw new Exception("A quantidade não é válida");
-		
 		this.dir = dir;
 		this.esq = esq;
 		this.qtd = qtd;
@@ -75,10 +72,48 @@ public class No {
 		this.cod = cod;
 	}
 	
+	public int mais(No outro)
+	{
+		return this.qtd+outro.qtd;
+	}
+	
 	public String toString()
 	{
 		String ret = "cod: " + cod;
 		ret += "\nqtd: " + qtd;
+		
+		return ret;
+	}
+	
+	public int compareTo(No x)
+	{
+		if (this.qtd == x.qtd)
+			return 0;
+		if (this.qtd < x.qtd)
+			return -1;
+		else
+			return 1;
+	}
+	
+	public No[] ordenar(No[] vetor)
+	{
+		No[] ret = new No[vetor.length];
+		
+		No menor = vetor[0];
+		int i;
+		
+		for(i = 1; i<vetor.length;i++)
+		{
+			if(menor.compareTo(vetor[i]) == 0)
+				vetor[i] = null;
+			if(menor.compareTo(vetor[i]) < 0)
+					menor = vetor[i];
+		}
+		vetor[i] = null; // tira o menor do vetor antigo
+		
+		int atual = 0;
+		
+		ret[atual] = menor;
 		
 		return ret;
 	}

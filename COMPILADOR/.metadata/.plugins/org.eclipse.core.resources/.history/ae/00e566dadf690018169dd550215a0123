@@ -1,0 +1,85 @@
+package no;
+
+public class No {
+	protected No dir = null;
+	protected No esq = null;
+	protected int qtd;
+	protected int cod;
+	
+	public No (No dir, No esq, int qtd) throws Exception //construtor destinado aos nós não folhas
+	{
+		if (qtd < 1)
+			throw new Exception("A quantidade não é válida");
+		
+		this.dir = dir;
+		this.esq = esq;
+		this.qtd = qtd;
+		this.cod = -1; //se o nó tiver o código como -1 significas que não possui um código
+	}
+	
+	public No (int cod, int qtd) throws Exception //construtor destinado aos nós folhas
+	{
+		if (qtd < 1)
+			throw new Exception("Quantidade inválida");
+		
+		if (cod < 0 || cod > 255)
+			throw new Exception("Código inválido");
+		
+		this.cod = cod;
+		this.qtd = qtd;
+	}
+	
+	public No getDir()
+	{
+		return dir;
+	}
+	
+	public void setDir( No dir)
+	{
+		this.dir = dir;
+	}
+	
+	public No getEsq()
+	{
+		return esq;
+	}
+	
+	public void setEsq( No esq)
+	{
+		this.esq = esq;
+	}
+	
+	public int getQtd()
+	{
+		return qtd;
+	}
+	
+	public void setQtd( int qtd) throws Exception
+	{
+		if (qtd < 1)
+			throw new Exception("Quantidade inválida");
+		
+		this.qtd = qtd;
+	}
+	
+	public int getCod()
+	{
+		return cod;
+	}
+	
+	public void setCod( int cod) throws Exception
+	{
+		if (cod < -1 || cod > 255)
+			throw new Exception("Código inválido");
+		
+		this.cod = cod;
+	}
+	
+	public String toString()
+	{
+		String ret = "cod: " + cod;
+		ret += "\nqtd: " + qtd;
+		
+		return ret;
+	}
+}
