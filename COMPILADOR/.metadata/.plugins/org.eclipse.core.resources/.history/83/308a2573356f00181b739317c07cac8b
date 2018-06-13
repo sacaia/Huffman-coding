@@ -40,7 +40,8 @@ public class Programa {
 			else
 				vetor[arquivo[i]].addQtd();
 		
-				
+		
+		
 		
 		}catch(Exception err)
 		{}
