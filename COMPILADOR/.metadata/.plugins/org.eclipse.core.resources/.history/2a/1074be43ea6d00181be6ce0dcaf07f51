@@ -65,11 +65,10 @@ public class Arvore {
 	
 	private void juntar(No[] vetor, int i, int j)
 	{
-		No aux;
 		if(vetor[i].compareTo(vetor[j]) > 0)
-			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
+			No aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
 		else
-			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
+			No aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
 		
 		vetor[j] = aux;
 		vetor[i] = null;

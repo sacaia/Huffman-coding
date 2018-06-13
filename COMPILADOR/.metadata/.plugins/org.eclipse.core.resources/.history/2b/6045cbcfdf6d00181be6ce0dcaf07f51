@@ -79,17 +79,14 @@ public class No implements Comparable<No> {
 	
 	public String toString()
 	{
-		String ret = "{cod: " + cod;
-		ret += "\nqtd: " + qtd + "}";
+		String ret = "cod: " + cod;
+		ret += "\nqtd: " + qtd;
 		
 		return ret;
 	}
 	
 	public int compareTo(No x)
 	{
-		if (x == null)
-			return 2;
-		
 		if (this.qtd == x.qtd)
 			return 0;
 		if (this.qtd < x.qtd)

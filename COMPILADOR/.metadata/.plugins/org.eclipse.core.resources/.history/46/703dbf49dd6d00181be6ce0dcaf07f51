@@ -79,17 +79,14 @@ public class No implements Comparable<No> {
 	
 	public String toString()
 	{
-		String ret = "{cod: " + cod;
-		ret += "\nqtd: " + qtd + "}";
+		String ret = "cod: " + cod;
+		ret += "\nqtd: " + qtd;
 		
 		return ret;
 	}
 	
 	public int compareTo(No x)
 	{
-		if (x == null)
-			return 2;
-		
 		if (this.qtd == x.qtd)
 			return 0;
 		if (this.qtd < x.qtd)
@@ -98,4 +95,31 @@ public class No implements Comparable<No> {
 			return 1;
 	}
 	
+	public No[] ordenar(No[] vetor)
+	{
+		No[] ret = new No[vetor.length];
+		
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = 0; j<vetor.length; j++)
+			{
+				if(vetor[i] < vetor[j])
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		vetor[i] = null; // tira o menor do vetor antigo
+		
+		int atual = 0;
+		
+		ret[atual] = menor;
+		
+		return ret;
+	}
 }
