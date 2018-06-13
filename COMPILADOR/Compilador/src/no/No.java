@@ -3,8 +3,8 @@ package no;
 public class No implements Comparable<No> {
 	protected No dir = null;
 	protected No esq = null;
-	protected int qtd;
-	protected int cod;
+	protected int qtd = 0;
+	protected byte cod;
 	
 	public No (No dir, No esq, int qtd) //construtor destinado aos nós não folhas
 	{
@@ -14,7 +14,7 @@ public class No implements Comparable<No> {
 		this.cod = -1; //se o nó tiver o código como -1 significas que não possui um código
 	}
 	
-	public No (int cod, int qtd) throws Exception //construtor destinado aos nós folhas
+	public No (byte cod, int qtd) throws Exception //construtor destinado aos nós folhas
 	{
 		if (qtd < 1)
 			throw new Exception("Quantidade inválida");
@@ -64,7 +64,7 @@ public class No implements Comparable<No> {
 		return cod;
 	}
 	
-	public void setCod( int cod) throws Exception
+	public void setCod(byte cod) throws Exception
 	{
 		if (cod < -1 || cod > 255)
 			throw new Exception("Código inválido");
@@ -93,6 +93,11 @@ public class No implements Comparable<No> {
 			return -1;
 		else
 			return 1;
+	}
+	
+	public void addQtd()
+	{
+		this.qtd++;
 	}
 	
 	public No[] ordenar(No[] vetor)

@@ -5,7 +5,7 @@ import no.*;
 public class Arvore {
 	private No raiz;
 	
-	public Arvore(int cod, int qtd) throws Exception
+	public Arvore(byte cod, int qtd) throws Exception
 	{
 		raiz = new No(cod, qtd);
 	}
