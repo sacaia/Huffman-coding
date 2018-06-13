@@ -12,6 +12,8 @@ public class Programa {
 		
 		try 
 		{
+			
+			
 		String caminho = teclado.readLine();
 		
 		RandomAccessFile arq = new RandomAccessFile(caminho, "rw");

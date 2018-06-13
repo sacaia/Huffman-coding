@@ -1,5 +1,6 @@
 import no.*;
 import java.io.*;
+import java.nio.file.Path;
 import java.util.BitSet;
 
 public class Programa {
@@ -9,18 +10,15 @@ public class Programa {
 	public static void main(String[] args) {
 		teclado = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Informe o caminho do arquivo");
-		
 		try 
 		{
-		String caminho = teclado.readLine();
-		
-		RandomAccessFile arq = new RandomAccessFile(caminho, "rw");
-		
-		
+			String caminho = teclado.readLine();
 		}catch(Exception erro)
 		{
 			System.out.println("caminho não encontrado");
 		}
+		
+		Path path = new Path(caminho)
 	}
 	
 	private void compilar(Byte[] arquivo)
