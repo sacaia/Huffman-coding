@@ -1,0 +1,19 @@
+package codigo;
+
+public class Codigo {
+
+	protected byte caracter;
+	protected int[] cod;
+	
+	public Codigo()
+	{
+		this.caracter = null;
+		this.cod = null;
+	}
+	
+	public Codigo(byte chr, int cod)
+	{
+		this.caracter = chr;
+		this.cod = cod;
+	}
+}

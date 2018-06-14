@@ -3,7 +3,7 @@ package arvore;
 import no.*;
 
 public class Arvore {
-	private No raiz;
+	protected No raiz;
 
 	public Arvore()
 	{
@@ -75,7 +75,7 @@ public class Arvore {
 		if((vetor[i] == null) || (vetor[j] == null))
 			return;
 		
-		if(this.comparar(vetor[i], vetor[j]) > 0)
+		if(this.compararQtd(vetor[i], vetor[j]) > 0)
 			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
 		else
 			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
@@ -93,7 +93,7 @@ public class Arvore {
 		{
 			for(j = i+1; j<vetor.length; j++)
 			{
-				if(this.comparar(vetor[i], vetor[j]) < 0)
+				if(this.compararQtd(vetor[i], vetor[j]) < 0)
 				{
 					aux = vetor[i]; 	
 					vetor[i] = vetor[j];
@@ -120,7 +120,7 @@ public class Arvore {
 				if(vetor[j] == null)
 					break;
 				
-				if(this.comparar(vetor[i], vetor[j]) < 0)
+				if(this.compararQtd(vetor[i], vetor[j]) < 0)
 				{
 					aux = vetor[i]; 	
 					vetor[i] = vetor[j];
@@ -132,7 +132,7 @@ public class Arvore {
 		return vetor;
 	}
 	
-	private int comparar(No n1, No n2)
+	public int compararQtd(No n1, No n2)
 	{
 		if( (n1 == null)&&(n2 == null) )
 			return 0;
@@ -149,6 +149,18 @@ public class Arvore {
 			return -1;
 		else
 			return 1;
+	}
+	
+	public int compararCod(No n1, No n2)
+	{
+		if(n1.getCod() == n2.getCod())
+			return 0;
+		
+		if(n1.getCod() < n2.getCod())
+			return -1;
+		
+		return 1;
+		
 	}
 	
 	public void montarArore(No[] vetor)
@@ -189,5 +201,30 @@ public class Arvore {
 			ret += toString(n.getEsq());
 		
 		return ret;
+	}
+	
+	public int[] montarCod(No x)
+	{
+		String str = this.montarCod(raiz, x);
+		int[] ret = new int[str.length()];
+		
+		for(int i = 0; i < str.length(); i++)
+			ret[i] = (int)str.charAt(i);
+		
+		return ret;
+	}
+
+	private String montarCod(No n, No x)
+	{
+		String ret = "";
+		if(this.compararCod(x, n) > 0) // x>n direita
+			ret += 1 + montarCod(n.getDir(), x);
+		
+		if(this.compararCod(x, n) < 0)
+			ret += 0 + montarCod(n.getEsq(), x);
+		
+		// x == n achou
+			return ret;
+		
 	}
 }

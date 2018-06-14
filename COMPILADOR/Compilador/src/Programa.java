@@ -2,11 +2,13 @@ import no.*;
 import java.io.*;
 import java.util.BitSet;
 import arvore.*;
+import codigo.*;
 
 public class Programa {
 	private static BufferedReader teclado;
 	private static No[] vetor;
 	private static Arvore arvore;
+	private static Codigo[] codigo;
 
 	public static void main(String[] args) {
 		teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -46,6 +48,7 @@ public class Programa {
 		arvore = new Arvore();
 		arvore.montarArore(vetor);
 		
+		codigo = new Codigo[256];
 		
 		}catch(Exception err)
 		{}
