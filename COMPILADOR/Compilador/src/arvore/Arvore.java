@@ -5,7 +5,7 @@ import no.*;
 public class Arvore {
 	private No raiz;
 	
-	public Arvore(byte cod, int qtd) throws Exception
+	public Arvore(int cod, int qtd) throws Exception
 	{
 		raiz = new No(cod, qtd);
 	}
@@ -22,6 +22,12 @@ public class Arvore {
 	
 	public void add(No no) 
 	{
+		if(raiz == null)
+		{
+			raiz = no;
+			return;
+		}
+			
 		No atual = raiz;
 		
 		while( (atual.getDir() != null)||(atual.getEsq() != null) )
@@ -57,9 +63,49 @@ public class Arvore {
 				this.add(new No(b, a, b.mais(a)));
 	}
 	
+	private void juntar(No[] vetor, int i, int j)
+	{
+		No aux;
+		if(vetor[i].compareTo(vetor[j]) > 0)
+			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
+		else
+			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
+		
+		vetor[j] = aux;
+		vetor[i] = null;
+	}
+	
+	public No[] ordenar(No[] vetor)
+	{	
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = i+1; j<vetor.length; j++)
+			{
+				if(vetor[i].compareTo(vetor[j]) < 0)
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		
+		return vetor;
+	}
+	
 	public void montarArore(No[] vetor)
 	{
+		for(int i = vetor.length-1; i > 0; i--)
+		{
+			this.ordenar(vetor);
+			
+			this.juntar(vetor, i, i-1);
+		}
 		
+		raiz = vetor[0];
 	}
 
 	

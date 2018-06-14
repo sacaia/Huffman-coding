@@ -99,27 +99,4 @@ public class No implements Comparable<No> {
 	{
 		this.qtd++;
 	}
-	
-	public No[] ordenar(No[] vetor)
-	{
-		No[] ret = new No[vetor.length];
-		
-		No menor = vetor[0];
-		int i;
-		
-		for(i = 1; i<vetor.length;i++)
-		{
-			if(menor.compareTo(vetor[i]) == 0)
-				vetor[i] = null;
-			if(menor.compareTo(vetor[i]) < 0)
-					menor = vetor[i];
-		}
-		vetor[i] = null; // tira o menor do vetor antigo
-		
-		int atual = 0;
-		
-		ret[atual] = menor;
-		
-		return ret;
-	}
 }
