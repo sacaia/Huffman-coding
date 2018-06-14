@@ -3,7 +3,12 @@ package arvore;
 import no.*;
 
 public class Arvore {
-	private No raiz;
+	protected No raiz;
+
+	public Arvore()
+	{
+		this.raiz = null;
+	}
 	
 	public Arvore(int cod, int qtd) throws Exception
 	{
@@ -66,7 +71,15 @@ public class Arvore {
 	private void juntar(No[] vetor, int i, int j)
 	{
 		No aux;
+<<<<<<< HEAD
 		if(vetor[i].compareTo(vetor[j]) > 0)
+=======
+		
+		if((vetor[i] == null) || (vetor[j] == null))
+			return;
+		
+		if(this.compararQtd(vetor[i], vetor[j]) > 0)
+>>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
 		else
 			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
@@ -75,7 +88,10 @@ public class Arvore {
 		vetor[i] = null;
 	}
 	
+<<<<<<< HEAD
 	public No[] ordenar(No[] vetor)
+=======
+	public No[] ordenarPrimeiraVez(No[] vetor)
 	{	
 		No aux;
 		int i, j;
@@ -84,7 +100,7 @@ public class Arvore {
 		{
 			for(j = i+1; j<vetor.length; j++)
 			{
-				if(vetor[i].compareTo(vetor[j]) < 0)
+				if(this.compararQtd(vetor[i], vetor[j]) < 0)
 				{
 					aux = vetor[i]; 	
 					vetor[i] = vetor[j];
@@ -96,6 +112,39 @@ public class Arvore {
 		return vetor;
 	}
 	
+	public No[] ordenarNezimaVez(No[] vetor)
+>>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
+	{	
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = i+1; j<vetor.length; j++)
+			{
+<<<<<<< HEAD
+				if(vetor[i].compareTo(vetor[j]) < 0)
+=======
+				if(vetor[i] == null)
+					return vetor;
+				
+				if(vetor[j] == null)
+					break;
+				
+				if(this.compararQtd(vetor[i], vetor[j]) < 0)
+>>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		
+		return vetor;
+	}
+	
+<<<<<<< HEAD
 	public void montarArore(No[] vetor)
 	{
 		for(int i = vetor.length-1; i > 0; i--)
@@ -106,8 +155,101 @@ public class Arvore {
 		}
 		
 		raiz = vetor[0];
+=======
+	public int compararQtd(No n1, No n2)
+	{
+		if( (n1 == null)&&(n2 == null) )
+			return 0;
+		
+		if( (n1 == null)&&(n2 != null) )
+			return -2;
+		
+		if( (n1 != null)&&(n2 == null) )
+			return 2;
+		
+		if (n1.getQtd() == n2.getQtd())
+			return 0;
+		if (n1.getQtd() < n2.getQtd())
+			return -1;
+		else
+			return 1;
+	}
+	
+	public int compararCod(No n1, No n2)
+	{
+		if(n1.getCod() == n2.getCod())
+			return 0;
+		
+		if(n1.getCod() < n2.getCod())
+			return -1;
+		
+		return 1;
+		
+	}
+	
+	public void montarArore(No[] vetor)
+	{
+		this.ordenarPrimeiraVez(vetor);
+		
+		for(int i = vetor.length-1; i > 0; i--)
+		{
+			this.juntar(vetor, i, i-1);
+			
+			this.ordenarNezimaVez(vetor);
+		}
+		
+		raiz = vetor[0];
+	}
+	
+	public String toString()
+	{
+		String ret = "";
+		
+		ret = this.toString(raiz);
+		
+		return ret;
+>>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 	}
 
+	private String toString(No n)
+	{
+		String ret = "";
+		
+		if(n.getDir() == null)
+			return n.toString() + "\n";
+		else
+			ret += toString(n.getDir());
+		
+		if(n.getEsq() == null)
+			return n.toString() + "\n";
+		else
+			ret += toString(n.getEsq());
+		
+		return ret;
+	}
 	
-	
+	public int[] montarCod(No x)
+	{
+		String str = this.montarCod(raiz, x);
+		int[] ret = new int[str.length()];
+		
+		for(int i = 0; i < str.length(); i++)
+			ret[i] = (int)str.charAt(i);
+		
+		return ret;
+	}
+
+	private String montarCod(No n, No x)
+	{
+		String ret = "";
+		if(this.compararCod(x, n) > 0) // x>n direita
+			ret += 1 + montarCod(n.getDir(), x);
+		
+		if(this.compararCod(x, n) < 0)
+			ret += 0 + montarCod(n.getEsq(), x);
+		
+		// x == n achou
+			return ret;
+		
+	}
 }

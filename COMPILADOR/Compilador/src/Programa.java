@@ -1,10 +1,14 @@
 import no.*;
 import java.io.*;
 import java.util.BitSet;
+import arvore.*;
+import codigo.*;
 
 public class Programa {
 	private static BufferedReader teclado;
 	private static No[] vetor;
+	private static Arvore arvore;
+	private static Codigo[] codigo;
 
 	public static void main(String[] args) {
 		teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -12,8 +16,9 @@ public class Programa {
 		
 		try 
 		{
-		String caminho = teclado.readLine();
-		
+		//String caminho = teclado.readLine();
+			String caminho = "C:/temp/teste.txt";
+			
 		RandomAccessFile arq = new RandomAccessFile(caminho, "r");
 		arq.seek(0);
 		byte[] infoArq = new byte[(int)arq.length()];
@@ -23,14 +28,14 @@ public class Programa {
 		
 		}catch(Exception erro)
 		{
-			System.err.println(erro);
+			erro.printStackTrace();
+			//System.out.println(erro);
 		}
 	}
 	
 	private static void compilar(byte[] arquivo)
 	{
 		vetor = new No[256];
-		int cont;
 		
 		try {
 		
@@ -40,7 +45,10 @@ public class Programa {
 			else
 				vetor[arquivo[i]].addQtd();
 		
-				
+		arvore = new Arvore();
+		arvore.montarArore(vetor);
+		
+		codigo = new Codigo[256];
 		
 		}catch(Exception err)
 		{}
