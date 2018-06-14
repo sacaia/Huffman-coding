@@ -10,7 +10,7 @@ public class Arvore {
 		this.raiz = null;
 	}
 	
-	public Arvore(int cod, int qtd) throws Exception
+	public Arvore(byte cod, int qtd) throws Exception
 	{
 		raiz = new No(cod, qtd);
 	}
@@ -71,15 +71,13 @@ public class Arvore {
 	private void juntar(No[] vetor, int i, int j)
 	{
 		No aux;
-<<<<<<< HEAD
+
 		if(vetor[i].compareTo(vetor[j]) > 0)
-=======
 		
 		if((vetor[i] == null) || (vetor[j] == null))
 			return;
 		
 		if(this.compararQtd(vetor[i], vetor[j]) > 0)
->>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
 		else
 			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
@@ -87,10 +85,7 @@ public class Arvore {
 		vetor[j] = aux;
 		vetor[i] = null;
 	}
-	
-<<<<<<< HEAD
-	public No[] ordenar(No[] vetor)
-=======
+
 	public No[] ordenarPrimeiraVez(No[] vetor)
 	{	
 		No aux;
@@ -113,7 +108,6 @@ public class Arvore {
 	}
 	
 	public No[] ordenarNezimaVez(No[] vetor)
->>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 	{	
 		No aux;
 		int i, j;
@@ -122,9 +116,8 @@ public class Arvore {
 		{
 			for(j = i+1; j<vetor.length; j++)
 			{
-<<<<<<< HEAD
 				if(vetor[i].compareTo(vetor[j]) < 0)
-=======
+
 				if(vetor[i] == null)
 					return vetor;
 				
@@ -132,7 +125,6 @@ public class Arvore {
 					break;
 				
 				if(this.compararQtd(vetor[i], vetor[j]) < 0)
->>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 				{
 					aux = vetor[i]; 	
 					vetor[i] = vetor[j];
@@ -143,19 +135,7 @@ public class Arvore {
 		
 		return vetor;
 	}
-	
-<<<<<<< HEAD
-	public void montarArore(No[] vetor)
-	{
-		for(int i = vetor.length-1; i > 0; i--)
-		{
-			this.ordenar(vetor);
-			
-			this.juntar(vetor, i, i-1);
-		}
-		
-		raiz = vetor[0];
-=======
+
 	public int compararQtd(No n1, No n2)
 	{
 		if( (n1 == null)&&(n2 == null) )
@@ -187,7 +167,7 @@ public class Arvore {
 		
 	}
 	
-	public void montarArore(No[] vetor)
+	public void montarArvore(No[] vetor)
 	{
 		this.ordenarPrimeiraVez(vetor);
 		
@@ -208,7 +188,6 @@ public class Arvore {
 		ret = this.toString(raiz);
 		
 		return ret;
->>>>>>> 8e6120ca0283efeac1b4df692e63c65145447809
 	}
 
 	private String toString(No n)
@@ -239,7 +218,7 @@ public class Arvore {
 		return ret;
 	}
 
-	private String montarCod(No n, No x)
+	protected String montarCod(No n, No x)
 	{
 		String ret = "";
 		if(this.compararCod(x, n) > 0) // x>n direita

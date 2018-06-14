@@ -35,5 +35,32 @@ public class Codigo {
 	public void setCod(int[] c)
 	{
 		this.cod = c;
+	}	
+	
+	public Codigo clone()
+	{
+		Codigo ret = null; 
+		
+		try {
+			ret = new Codigo(this);
+		}catch(Exception err) {}
+		
+		return ret;
+	}
+	
+	public Codigo(Codigo modelo) throws Exception
+	{
+		if (modelo == null)
+			throw new Exception("Modelo ausente");
+		
+		this.caracter = modelo.caracter;
+		this.cod = modelo.cod;
 	}
 }
+
+
+
+
+
+
+

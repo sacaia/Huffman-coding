@@ -12,19 +12,49 @@ public class Programa {
 
 	public static void main(String[] args) {
 		teclado = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Informe o caminho do arquivo");
 		
 		try 
 		{
 		//String caminho = teclado.readLine();
-			String caminho = "C:/temp/teste.txt";
 			
-		RandomAccessFile arq = new RandomAccessFile(caminho, "r");
-		arq.seek(0);
-		byte[] infoArq = new byte[(int)arq.length()];
-		arq.read(infoArq);
-		arq.close();
-		compilar(infoArq);
+			
+			System.out.println("Escolha o que quer fazer:");
+			System.out.println("1- Compactar");
+			System.out.println("2- Descompactar");
+			String escolha = teclado.readLine();
+			
+			switch (escolha)
+			{
+			case "1":
+				System.out.println("Informe o caminho do arquivo");
+				String caminho = "C:/temp/teste.txt";				
+				
+				RandomAccessFile arq = new RandomAccessFile(caminho, "r");
+				arq.seek(0);
+				byte[] infoArq = new byte[(int)arq.length()];
+				arq.read(infoArq);
+				arq.close();
+				compactar(infoArq);
+				
+				int extencao = caminho.lastIndexOf(".");
+				String  compilado = caminho.substring(0, extencao);
+				compilado += ".ica";
+				System.out.println(compilado);
+				
+				RandomAccessFile comp = new RandomAccessFile(compilado, "rw");
+				comp.seek(comp.length());
+				comp.write("Pra colocar oq vai escrever".getBytes());
+				comp.close();
+				
+				break;
+			case "2":
+				//fazer a parte do descompactador
+				break;
+			default:
+				System.out.println("Dígito inválido");
+				break;				
+			}		
+			
 		
 		}catch(Exception erro)
 		{
@@ -33,7 +63,7 @@ public class Programa {
 		}
 	}
 	
-	private static void compilar(byte[] arquivo)
+	private static void compactar(byte[] arquivo)
 	{
 		vetor = new No[256];
 		
@@ -46,7 +76,7 @@ public class Programa {
 				vetor[arquivo[i]].addQtd();
 		
 		arvore = new Arvore();
-		arvore.montarArore(vetor);
+		arvore.montarArvore(vetor);
 		
 		codigo = new Codigo[256];
 		
