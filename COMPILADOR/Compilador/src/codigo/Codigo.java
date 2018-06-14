@@ -2,40 +2,37 @@ package codigo;
 
 public class Codigo {
 
-	protected byte caracter;
-	protected int[] cod;
+	protected String cod;
 	
 	public Codigo()
 	{
-		this.caracter = (Byte) null;
-		this.cod = null;
+		this.cod = "";
 	}
 	
-	public Codigo(byte chr, int[] cod)
+	public Codigo(String cod)
 	{
-		this.caracter = chr;
 		this.cod = cod;
 	}
-	
-	public byte getCaracter()
-	{
-		return this.caracter;
-	}
-	
-	public int[] getCod()
+		
+	public String getCod()
 	{
 		return this.cod;
 	}
-	
-	public void setCaracter(byte b)
-	{
-		this.caracter = b;
-	}
-	
-	public void setCod(int[] c)
+		
+	public void setCod(String c)
 	{
 		this.cod = c;
-	}	
+	}
+	
+	public void mais(String cod)
+	{
+		this.cod += cod;
+	}
+	
+	public void tiraUltimo()
+	{
+		this.cod = cod.substring(0, cod.length() - 1);
+	}
 	
 	public Codigo clone()
 	{
@@ -53,8 +50,17 @@ public class Codigo {
 		if (modelo == null)
 			throw new Exception("Modelo ausente");
 		
-		this.caracter = modelo.caracter;
 		this.cod = modelo.cod;
+	}
+	
+	public String toString()
+	{
+		if(this == null)
+			return "{null}";
+
+		String ret = " cod: " + cod;
+		
+		return ret;
 	}
 }
 

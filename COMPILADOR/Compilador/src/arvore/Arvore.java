@@ -1,9 +1,11 @@
 package arvore;
 
 import no.*;
+import codigo.*;
 
 public class Arvore {
 	protected No raiz;
+	protected Codigo[] ret = new Codigo[256];
 
 	public Arvore()
 	{
@@ -71,8 +73,6 @@ public class Arvore {
 	private void juntar(No[] vetor, int i, int j)
 	{
 		No aux;
-
-		if(vetor[i].compareTo(vetor[j]) > 0)
 		
 		if((vetor[i] == null) || (vetor[j] == null))
 			return;
@@ -116,7 +116,6 @@ public class Arvore {
 		{
 			for(j = i+1; j<vetor.length; j++)
 			{
-				if(vetor[i].compareTo(vetor[j]) < 0)
 
 				if(vetor[i] == null)
 					return vetor;
@@ -207,28 +206,26 @@ public class Arvore {
 		return ret;
 	}
 	
-	public int[] montarCod(No x)
+	public Codigo[] montarCod()
 	{
-		String str = this.montarCod(raiz, x);
-		int[] ret = new int[str.length()];
-		
-		for(int i = 0; i < str.length(); i++)
-			ret[i] = (int)str.charAt(i);
-		
+		this.montarCod(this.getRaiz(), new Codigo());
 		return ret;
 	}
 
-	protected String montarCod(No n, No x)
+	protected void montarCod(No raiz, Codigo c)
 	{
-		String ret = "";
-		if(this.compararCod(x, n) > 0) // x>n direita
-			ret += 1 + montarCod(n.getDir(), x);
-		
-		if(this.compararCod(x, n) < 0)
-			ret += 0 + montarCod(n.getEsq(), x);
-		
-		// x == n achou
-			return ret;
+		if (raiz != null)
+			if(raiz.getCod() != -1)
+				ret[raiz.getCod()] = (Codigo)c.clone();
+			else
+			{
+				c.mais("0");
+				montarCod(raiz.getEsq(), c);
+				c.tiraUltimo();
+				c.mais("1");
+				montarCod(raiz.getDir(), c);
+				c.tiraUltimo();				
+			}
 		
 	}
 }

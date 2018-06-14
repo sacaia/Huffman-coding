@@ -1,0 +1,67 @@
+package codigo;
+
+public class Codigo {
+
+	protected String cod;
+	
+	public Codigo()
+	{
+		this.cod = "";
+	}
+	
+	public Codigo(String cod)
+	{
+		this.cod = cod;
+	}
+		
+	public String getCod()
+	{
+		return this.cod;
+	}
+		
+	public void setCod(String c)
+	{
+		this.cod = c;
+	}
+	
+	public void mais(String cod)
+	{
+		this.cod += cod;
+	}
+	
+	public Codigo clone()
+	{
+		Codigo ret = null; 
+		
+		try {
+			ret = new Codigo(this);
+		}catch(Exception err) {}
+		
+		return ret;
+	}
+	
+	public Codigo(Codigo modelo) throws Exception
+	{
+		if (modelo == null)
+			throw new Exception("Modelo ausente");
+		
+		this.cod = modelo.cod;
+	}
+	
+	public String toString()
+	{
+		if(this == null)
+			return "{null}";
+
+		String ret = " cod: " + cod;
+		
+		return ret;
+	}
+}
+
+
+
+
+
+
+

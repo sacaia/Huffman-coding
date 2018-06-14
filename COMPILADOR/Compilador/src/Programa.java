@@ -37,11 +37,10 @@ public class Programa {
 				compactar(infoArq);
 				
 				int extencao = caminho.lastIndexOf(".");
-				String  compilado = caminho.substring(0, extencao);
-				compilado += ".ica";
-				System.out.println(compilado);
+				String  compactado = caminho.substring(0, extencao);
+				compactado += ".ica";
 				
-				RandomAccessFile comp = new RandomAccessFile(compilado, "rw");
+				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
 				comp.seek(comp.length());
 				comp.write("Pra colocar oq vai escrever".getBytes());
 				comp.close();
@@ -69,7 +68,7 @@ public class Programa {
 		
 		try {
 		
-		for (int i = 0; i < arquivo.length; i++)
+		for(int i = 0; i < arquivo.length; i++)
 			if (vetor[arquivo[i]] == null)
 				vetor[arquivo[i]] = new No(arquivo[i], 1);
 			else
@@ -78,10 +77,14 @@ public class Programa {
 		arvore = new Arvore();
 		arvore.montarArvore(vetor);
 		
-		codigo = new Codigo[256];
+		codigo = arvore.montarCod();
+		
+		System.out.println(codigo);
 		
 		}catch(Exception err)
-		{}
+		{
+			err.printStackTrace();
+		}
 	}
 
 }

@@ -59,7 +59,7 @@ public class No implements Comparable<No> {
 		this.qtd = qtd;
 	}
 	
-	public int getCod()
+	public byte getCod()
 	{
 		return cod;
 	}
