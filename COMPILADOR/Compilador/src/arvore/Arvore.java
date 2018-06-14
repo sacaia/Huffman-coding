@@ -4,6 +4,11 @@ import no.*;
 
 public class Arvore {
 	private No raiz;
+
+	public Arvore()
+	{
+		this.raiz = null;
+	}
 	
 	public Arvore(byte cod, int qtd) throws Exception
 	{
@@ -22,6 +27,12 @@ public class Arvore {
 	
 	public void add(No no) 
 	{
+		if(raiz == null)
+		{
+			raiz = no;
+			return;
+		}
+			
 		No atual = raiz;
 		
 		while( (atual.getDir() != null)||(atual.getEsq() != null) )
@@ -57,11 +68,126 @@ public class Arvore {
 				this.add(new No(b, a, b.mais(a)));
 	}
 	
+	private void juntar(No[] vetor, int i, int j)
+	{
+		No aux;
+		
+		if((vetor[i] == null) || (vetor[j] == null))
+			return;
+		
+		if(this.comparar(vetor[i], vetor[j]) > 0)
+			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
+		else
+			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
+		
+		vetor[j] = aux;
+		vetor[i] = null;
+	}
+	
+	public No[] ordenarPrimeiraVez(No[] vetor)
+	{	
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = i+1; j<vetor.length; j++)
+			{
+				if(this.comparar(vetor[i], vetor[j]) < 0)
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		
+		return vetor;
+	}
+	
+	public No[] ordenarNezimaVez(No[] vetor)
+	{	
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = i+1; j<vetor.length; j++)
+			{
+				if(vetor[i] == null)
+					return vetor;
+				
+				if(vetor[j] == null)
+					break;
+				
+				if(this.comparar(vetor[i], vetor[j]) < 0)
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		
+		return vetor;
+	}
+	
+	private int comparar(No n1, No n2)
+	{
+		if( (n1 == null)&&(n2 == null) )
+			return 0;
+		
+		if( (n1 == null)&&(n2 != null) )
+			return -2;
+		
+		if( (n1 != null)&&(n2 == null) )
+			return 2;
+		
+		if (n1.getQtd() == n2.getQtd())
+			return 0;
+		if (n1.getQtd() < n2.getQtd())
+			return -1;
+		else
+			return 1;
+	}
+	
 	public void montarArore(No[] vetor)
 	{
+		this.ordenarPrimeiraVez(vetor);
 		
+		for(int i = vetor.length-1; i > 0; i--)
+		{
+			this.juntar(vetor, i, i-1);
+			
+			this.ordenarNezimaVez(vetor);
+		}
+		
+		raiz = vetor[0];
+	}
+	
+	public String toString()
+	{
+		String ret = "";
+		
+		ret = this.toString(raiz);
+		
+		return ret;
 	}
 
-	
-	
+	private String toString(No n)
+	{
+		String ret = "";
+		
+		if(n.getDir() == null)
+			return n.toString() + "\n";
+		else
+			ret += toString(n.getDir());
+		
+		if(n.getEsq() == null)
+			return n.toString() + "\n";
+		else
+			ret += toString(n.getEsq());
+		
+		return ret;
+	}
 }

@@ -1,0 +1,140 @@
+package arvore;
+
+import no.*;
+
+public class Arvore {
+	private No raiz;
+
+	public Arvore()
+	{
+		this.raiz = null;
+	}
+	
+	public Arvore(byte cod, int qtd) throws Exception
+	{
+		raiz = new No(cod, qtd);
+	}
+	
+	public No getRaiz()
+	{
+		return this.raiz;
+	}
+	
+	public void setRaiz(No raiz)
+	{
+		this.raiz = raiz;
+	}
+	
+	public void add(No no) 
+	{
+		if(raiz == null)
+		{
+			raiz = no;
+			return;
+		}
+			
+		No atual = raiz;
+		
+		while( (atual.getDir() != null)||(atual.getEsq() != null) )
+		{
+			if(no.compareTo(atual) == 0)
+				return; //n adiciona igual
+	
+			if(no.compareTo(atual) < 0)
+				if(atual.getDir() == null)
+				{
+					atual.setDir(no);
+					return;
+				}	
+				else
+					atual = atual.getEsq();
+			else
+				if(atual.getEsq() == null)
+				{
+					atual.setEsq(no);
+					return;
+				}
+				else
+					atual = atual.getDir();
+		}
+		
+	}
+	
+	public void juntar(No a, No b)
+	{
+		if(a.compareTo(b) < 0)
+			this.add(new No(a, b, a.mais(b)));
+			else
+				this.add(new No(b, a, b.mais(a)));
+	}
+	
+	private void juntar(No[] vetor, int i, int j)
+	{
+		No aux;
+		if(vetor[i].compareTo(vetor[j]) > 0)
+			aux = new No(vetor[i], vetor[j], vetor[i].mais(vetor[j]));
+		else
+			aux = new No(vetor[j], vetor[i], vetor[i].mais(vetor[j]));
+		
+		vetor[j] = aux;
+		vetor[i] = null;
+	}
+	
+	public No[] ordenar(No[] vetor)
+	{	
+		No aux;
+		int i, j;
+		
+		for(i = 0; i<vetor.length; i++)
+		{
+			for(j = i+1; j<vetor.length; j++)
+			{
+				if(vetor[i].compareTo(vetor[j]) < 0)
+				{
+					aux = vetor[i]; 	
+					vetor[i] = vetor[j];
+					vetor[j] = aux;	
+				}
+			}
+		}
+		
+		return vetor;
+	}
+	
+	public void montarArore(No[] vetor)
+	{
+		for(int i = vetor.length-1; i > 0; i--)
+		{
+			this.ordenar(vetor);
+			
+			this.juntar(vetor, i, i-1);
+		}
+		
+		raiz = vetor[0];
+	}
+	
+	public String toString()
+	{
+		String ret = "";
+		
+		ret = this.toString(raiz);
+		
+		return ret;
+	}
+
+	private String toString(No n)
+	{
+		String ret = "";
+		if(n.getEsq() == null)
+			return n.toString();
+		else
+			return toString(n.getEsq());
+		
+		if(n.getDir() == null)
+			return n.toString();
+		else
+			return toString(n.getDir());
+		
+		return "";// + toString(n.getEsq()) + toString(n.getDir());
+	}
+}
