@@ -5,7 +5,6 @@ import codigo.*;
 
 public class Arvore {
 	protected No raiz;
-	protected Codigo[] ret = new Codigo[256];
 
 	public Arvore()
 	{
@@ -170,14 +169,24 @@ public class Arvore {
 	{
 		this.ordenarPrimeiraVez(vetor);
 		
-		for(int i = vetor.length-1; i > 0; i--)
+		No[] aux = new No[256];
+		
+		for(int i = 0; i < vetor.length; i++)
 		{
-			this.juntar(vetor, i, i-1);
+			if(vetor[i] == null)
+				break;
+			else
+				aux[i] = new No(vetor[i]);
+		}
+
+		for(int i = aux.length-1; i > 0; i--)
+		{
+			this.juntar(aux, i, i-1);
 			
-			this.ordenarNezimaVez(vetor);
+			this.ordenarNezimaVez(aux);
 		}
 		
-		raiz = vetor[0];
+		raiz = aux[0];
 	}
 	
 	public String toString()
@@ -206,26 +215,4 @@ public class Arvore {
 		return ret;
 	}
 	
-	public Codigo[] montarCod()
-	{
-		this.montarCod(this.getRaiz(), new Codigo());
-		return ret;
-	}
-
-	protected void montarCod(No raiz, Codigo c)
-	{
-		if (raiz != null)
-			if(raiz.getCod() != -1)
-				ret[raiz.getCod()] = (Codigo)c.clone();
-			else
-			{
-				c.mais("0");
-				montarCod(raiz.getEsq(), c);
-				c.tiraUltimo();
-				c.mais("1");
-				montarCod(raiz.getDir(), c);
-				c.tiraUltimo();				
-			}
-		
-	}
 }

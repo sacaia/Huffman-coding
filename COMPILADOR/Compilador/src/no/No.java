@@ -26,6 +26,14 @@ public class No implements Comparable<No> {
 		this.qtd = qtd;
 	}
 	
+	public No(No no) 
+	{
+		this.qtd = no.qtd;
+		this.cod = no.cod;
+		this.dir = no.dir;
+		this.esq = no.esq;
+	}
+
 	public No getDir()
 	{
 		return dir;

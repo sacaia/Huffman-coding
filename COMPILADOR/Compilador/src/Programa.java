@@ -42,7 +42,7 @@ public class Programa {
 				
 				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
 				comp.seek(comp.length());
-				comp.write("Pra colocar oq vai escrever".getBytes());
+				comp.write("Lixo".getBytes()));
 				comp.close();
 				
 				break;
@@ -77,9 +77,8 @@ public class Programa {
 		arvore = new Arvore();
 		arvore.montarArvore(vetor);
 		
-		codigo = arvore.montarCod();
-		
-		System.out.println(codigo);
+		codigo = new Codigo[256];
+		montarCod();
 		
 		}catch(Exception err)
 		{
@@ -87,4 +86,25 @@ public class Programa {
 		}
 	}
 
+	public static void montarCod()
+	{
+		montarCod(arvore.getRaiz(), new Codigo());
+	}
+
+	protected static void montarCod(No raiz, Codigo c)
+	{
+		if (raiz != null)
+			if(raiz.getCod() != -1)
+				codigo[raiz.getCod()] = (Codigo)c.clone();
+			else
+			{
+				c.mais("0");
+				montarCod(raiz.getEsq(), c);
+				c.tiraUltimo();
+				c.mais("1");
+				montarCod(raiz.getDir(), c);
+				c.tiraUltimo();				
+			}
+		
+	}
 }
