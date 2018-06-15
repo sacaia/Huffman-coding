@@ -9,6 +9,8 @@ public class Programa {
 	private static No[] vetor;
 	private static Arvore arvore;
 	private static Codigo[] codigo;
+	private static int qtdChars;
+	private static byte[] corpo;
 
 	public static void main(String[] args) {
 		teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -35,19 +37,103 @@ public class Programa {
 				arq.read(infoArq);
 				arq.close();
 				compactar(infoArq);
+				gerarCorpo(infoArq);
+				qtdChars = getQtdChars();
 				
-				int extencao = caminho.lastIndexOf(".");
-				String  compactado = caminho.substring(0, extencao);
+				
+				int posPonto = caminho.lastIndexOf(".");
+				String extencao = caminho.substring(posPonto);
+				String  compactado = caminho.substring(0, posPonto);
 				compactado += ".ica";
 				
 				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
 				comp.seek(comp.length());
-				comp.write("Lixo".getBytes()));
+				
+				comp.writeInt(1);//lixo
+				comp.writeChars(extencao); // extencao
+				comp.writeInt(qtdChars);//qtd de chars diferentes
+				
+				
+				for(int i = 0; i < qtdChars; i++)
+				{
+					comp.writeByte(vetor[i].getCod());
+					comp.writeInt(vetor[i].getQtd());
+				}
+				
+				comp.write(corpo);
+				
+				
 				comp.close();
 				
 				break;
+				
 			case "2":
-				//fazer a parte do descompactador
+				System.out.println("Informe o caminho do arquivo");
+				String local = "C:/temp/teste.ica";
+				
+				RandomAccessFile arqDescomp = new RandomAccessFile(local, "r");
+				arqDescomp.seek(0);
+				
+				vetor = new No[256];
+				
+				int lixo = arqDescomp.readInt(); // 4 bytes
+//				String ext = arqDescomp.read
+				int qtdChars = arqDescomp.readInt(); // 4 bytes
+				
+				for(int i = 0; i < qtdChars; i++) // 5 bytes
+				{
+					vetor[i] = new No(arqDescomp.readByte(), arqDescomp.readInt());
+				}
+				
+				byte[] aDescomp = new byte[(int)arqDescomp.length() - (8 + (qtdChars*5))];
+				
+				arqDescomp.read(aDescomp);
+				arqDescomp.close();
+				
+				arvore = new Arvore();
+				arvore.montarArvore(vetor);
+				
+				codigo = new Codigo[256];
+				montarCod();
+				
+				BitSet arquivao = new BitSet();
+				int posBit = 0;
+				
+				for(int i = 0; i < aDescomp.length; i++)
+				{
+					for(int j = 0; j < 8; j++)
+					{
+						if(getBit(aDescomp[i], j) == 1)
+							arquivao.set(posBit, true);
+						else
+							arquivao.set(posBit, false);
+						
+						posBit++;
+					}
+				}
+				
+				posBit = 0;
+				No atual = arvore.getRaiz();
+				
+				int ponto = caminho.lastIndexOf(".");
+				String fim = local.substring(ponto);
+				local = local.substring(0, extencao);
+				local += fim;
+				
+				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
+				comp.seek(comp.length());
+				
+				for(int i = 0; i < arquivao.length(); i++)
+				{
+					if (atual.getCod() == -1)
+						if(arquivao.get(posBit))
+							atual = atual.getDir();
+						else
+							atual = atual.getEsq();
+					else // folha
+						
+				}
+				
 				break;
 			default:
 				System.out.println("Dígito inválido");
@@ -62,6 +148,63 @@ public class Programa {
 		}
 	}
 	
+	
+	public static byte getBit(byte b, int position)
+	{
+	   return (byte) ((b >> position) & 1);
+	}
+	
+	private static void gerarCorpo(byte[] arquivo) 
+	{
+		//corpo = new BitSet(getTamanho());
+		
+		BitSet bit = new BitSet();
+		
+		int posBit = 0;
+		for (int i = 0; i < arvore.getRaiz().getQtd(); i++)
+		{
+			String bits = codigo[arquivo[i]].getCod();
+						
+			for (int j = 0; j < bits.length(); j++)
+			{
+				if (bits.charAt(j) == '0')
+					bit.set(posBit, false);
+				else
+					bit.set(posBit, true);
+				
+				posBit++;
+			}
+		}
+		
+		corpo = bit.toByteArray();
+	}
+
+	private static int getQtdChars() 
+	{
+		int ret = 0;
+		for(int i = 0; i < vetor.length; i++)
+		{
+			if(vetor[i] != null)
+				ret++;
+		}
+		return ret;
+	}
+	
+	private static int getTamanho()
+	{
+		int ret = 0;
+		
+		for(int i = 0; i< vetor.length; i++)
+		{
+			if(vetor[i] == null)
+				break;
+			
+			ret += (codigo[vetor[i].getCod()].getCod().length())*(vetor[i].getQtd());
+		}
+		
+		return ret;
+	}
+
 	private static void compactar(byte[] arquivo)
 	{
 		vetor = new No[256];

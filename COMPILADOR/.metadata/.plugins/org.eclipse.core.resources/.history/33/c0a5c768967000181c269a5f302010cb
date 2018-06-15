@@ -1,0 +1,110 @@
+import no.*;
+import java.io.*;
+import java.util.BitSet;
+import arvore.*;
+import codigo.*;
+
+public class Programa {
+	private static BufferedReader teclado;
+	private static No[] vetor;
+	private static Arvore arvore;
+	private static Codigo[] codigo;
+
+	public static void main(String[] args) {
+		teclado = new BufferedReader(new InputStreamReader(System.in));
+		
+		try 
+		{
+		//String caminho = teclado.readLine();
+			
+			
+			System.out.println("Escolha o que quer fazer:");
+			System.out.println("1- Compactar");
+			System.out.println("2- Descompactar");
+			String escolha = teclado.readLine();
+			
+			switch (escolha)
+			{
+			case "1":
+				System.out.println("Informe o caminho do arquivo");
+				String caminho = "C:/temp/teste.txt";				
+				
+				RandomAccessFile arq = new RandomAccessFile(caminho, "r");
+				arq.seek(0);
+				byte[] infoArq = new byte[(int)arq.length()];
+				arq.read(infoArq);
+				arq.close();
+				compactar(infoArq);
+				
+				int extencao = caminho.lastIndexOf(".");
+				String  compactado = caminho.substring(0, extencao);
+				compactado += ".ica";
+				
+				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
+				comp.seek(comp.length());
+				comp.write("Lixo".getBytes());
+				comp.close();
+				
+				break;
+			case "2":
+				//fazer a parte do descompactador
+				break;
+			default:
+				System.out.println("Dígito inválido");
+				break;				
+			}		
+			
+		
+		}catch(Exception erro)
+		{
+			erro.printStackTrace();
+			//System.out.println(erro);
+		}
+	}
+	
+	private static void compactar(byte[] arquivo)
+	{
+		vetor = new No[256];
+		
+		try {
+		
+		for(int i = 0; i < arquivo.length; i++)
+			if (vetor[arquivo[i]] == null)
+				vetor[arquivo[i]] = new No(arquivo[i], 1);
+			else
+				vetor[arquivo[i]].addQtd();
+		
+		arvore = new Arvore();
+		arvore.montarArvore(vetor);
+		
+		codigo = new Codigo[256];
+		montarCod();
+		
+		}catch(Exception err)
+		{
+			err.printStackTrace();
+		}
+	}
+
+	public static void montarCod()
+	{
+		montarCod(arvore.getRaiz(), new Codigo());
+	}
+
+	protected static void montarCod(No raiz, Codigo c)
+	{
+		if (raiz != null)
+			if(raiz.getCod() != -1)
+				codigo[raiz.getCod()] = (Codigo)c.clone();
+			else
+			{
+				c.mais("0");
+				montarCod(raiz.getEsq(), c);
+				c.tiraUltimo();
+				c.mais("1");
+				montarCod(raiz.getDir(), c);
+				c.tiraUltimo();				
+			}
+		
+	}
+}
