@@ -1,0 +1,116 @@
+package no;
+
+public class No implements Comparable<No> {
+	protected No dir = null;
+	protected No esq = null;
+	protected int qtd = 0;
+	protected byte cod;
+	
+	public No (No dir, No esq, int qtd) //construtor destinado aos nós não folhas
+	{
+		this.dir = dir;
+		this.esq = esq;
+		this.qtd = qtd;
+		this.cod = -1; //se o nó tiver o código como -1 significas que não possui um código
+	}
+	
+	public No (byte cod, int qtd) throws Exception //construtor destinado aos nós folhas
+	{
+		if (qtd < 1)
+			throw new Exception("Quantidade inválida");
+		
+		if (cod < 0 || cod > 255)
+			throw new Exception("Código inválido");
+		
+		this.cod = cod;
+		this.qtd = qtd;
+	}
+	
+	public No(No no) 
+	{
+		this.qtd = no.qtd;
+		this.cod = no.cod;
+		this.dir = no.dir;
+		this.esq = no.esq;
+	}
+
+	public No getDir()
+	{
+		return dir;
+	}
+	
+	public void setDir( No dir)
+	{
+		this.dir = dir;
+	}
+	
+	public No getEsq()
+	{
+		return esq;
+	}
+	
+	public void setEsq( No esq)
+	{
+		this.esq = esq;
+	}
+	
+	public int getQtd()
+	{
+		return qtd;
+	}
+	
+	public void setQtd( int qtd) throws Exception
+	{
+		if (qtd < 1)
+			throw new Exception("Quantidade inválida");
+		
+		this.qtd = qtd;
+	}
+	
+	public byte getCod()
+	{
+		return cod;
+	}
+	
+	public void setCod(byte cod) throws Exception
+	{
+		if (cod < -1 || cod > 255)
+			throw new Exception("Código inválido");
+		
+		this.cod = cod;
+	}
+	
+	public int mais(No outro)
+	{
+		return this.qtd+outro.qtd;
+	}
+	
+	public String toString()
+	{
+		if(this == null)
+			return "{null}";
+
+		String ret = "cod: " + cod;
+		ret += " qtd: " + qtd;
+		
+		return ret;
+	}
+	
+	public int compareTo(No x)
+	{
+		//if (x == null)
+			//return 2;
+		
+		if (this.qtd == x.qtd)
+			return 0;
+		if (this.qtd < x.qtd)
+			return -1;
+		else
+			return 1;
+	}
+	
+	public void addQtd()
+	{
+		this.qtd++;
+	}
+}

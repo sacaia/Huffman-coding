@@ -11,8 +11,11 @@ public class Programa {
 	private static Codigo[] codigo;
 	private static int qtdChars;
 	private static byte[] corpo;
+	private static int poop;
+	private static String escolha;
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		teclado = new BufferedReader(new InputStreamReader(System.in));
 		
 		try 
@@ -23,124 +26,202 @@ public class Programa {
 			System.out.println("Escolha o que quer fazer:");
 			System.out.println("1- Compactar");
 			System.out.println("2- Descompactar");
-			String escolha = teclado.readLine();
+			System.out.println("3- Sair");
 			
-			switch (escolha)
+			while (escolha != "3")
 			{
-			case "1":
-				System.out.println("Informe o caminho do arquivo");
-				String caminho = "C:/temp/teste.txt";				
+				escolha = teclado.readLine();
 				
-				RandomAccessFile arq = new RandomAccessFile(caminho, "r");
-				arq.seek(0);
-				byte[] infoArq = new byte[(int)arq.length()];
-				arq.read(infoArq);
-				arq.close();
-				compactar(infoArq);
-				gerarCorpo(infoArq);
-				qtdChars = getQtdChars();
-				
-				
-				int posPonto = caminho.lastIndexOf(".");
-				String extencao = caminho.substring(posPonto);
-				String  compactado = caminho.substring(0, posPonto);
-				compactado += ".ica";
-				
-				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
-				comp.seek(comp.length());
-				
-				comp.writeInt(1);//lixo
-				comp.writeChars(extencao); // extencao
-				comp.writeInt(qtdChars);//qtd de chars diferentes
-				
-				
-				for(int i = 0; i < qtdChars; i++)
+				switch (escolha)
 				{
-					comp.writeByte(vetor[i].getCod());
-					comp.writeInt(vetor[i].getQtd());
-				}
-				
-				comp.write(corpo);
-				
-				
-				comp.close();
-				
-				break;
-				
-			case "2":
-				System.out.println("Informe o caminho do arquivo");
-				String local = "C:/temp/teste.ica";
-				
-				RandomAccessFile arqDescomp = new RandomAccessFile(local, "r");
-				arqDescomp.seek(0);
-				
-				vetor = new No[256];
-				
-				int lixo = arqDescomp.readInt(); // 4 bytes
-//				String ext = arqDescomp.read
-				int qtdChars = arqDescomp.readInt(); // 4 bytes
-				
-				for(int i = 0; i < qtdChars; i++) // 5 bytes
-				{
-					vetor[i] = new No(arqDescomp.readByte(), arqDescomp.readInt());
-				}
-				
-				byte[] aDescomp = new byte[(int)arqDescomp.length() - (8 + (qtdChars*5))];
-				
-				arqDescomp.read(aDescomp);
-				arqDescomp.close();
-				
-				arvore = new Arvore();
-				arvore.montarArvore(vetor);
-				
-				codigo = new Codigo[256];
-				montarCod();
-				
-				BitSet arquivao = new BitSet();
-				int posBit = 0;
-				
-				for(int i = 0; i < aDescomp.length; i++)
-				{
-					for(int j = 0; j < 8; j++)
+				case "1":
+					System.out.println("Informe o caminho do arquivo");
+					String caminho = teclado.readLine();				
+					RandomAccessFile arq;
+					try {
+						arq = new RandomAccessFile(caminho, "r");
+					}catch(Exception err)
 					{
-						if(getBit(aDescomp[i], j) == 1)
-							arquivao.set(posBit, true);
-						else
-							arquivao.set(posBit, false);
-						
-						posBit++;
+						escolha = "0";
+						System.out.println("Caminho não existe!");
+						System.out.println("Escolha o que quer fazer:");
+						System.out.println("1- Compactar");
+						System.out.println("2- Descompactar");
+						System.out.println("3- Sair");
+						break;
 					}
-				}
+					arq.seek(0);
+					byte[] infoArq = new byte[(int)arq.length()];
+					arq.read(infoArq);
+					arq.close();
+					
+					System.out.println("Compactando...");
+					compactar(infoArq);
+					
+					System.out.println("Gerando Codigo...");
+					gerarCorpo(infoArq);
+					qtdChars = getQtdChars();
+					
+					
+					int posPonto = caminho.lastIndexOf(".");
+					String extencao = caminho.substring(posPonto+1);
+					String compactado = caminho.substring(0, posPonto);
+					compactado += ".ica";
+					
+					RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
+					comp.seek(comp.length());
+					
+					System.out.println("Escrevendo...");
+					comp.writeInt(poop);//lixo
+					comp.writeInt(extencao.length()); // quantos digitos de extencao
+					comp.writeChars(extencao); // extencao
+					comp.writeInt(qtdChars);//qtd de chars diferentes
+					
+					
+					for(int i = 0; i < qtdChars; i++)
+					{
+						comp.writeByte(vetor[i].getCod());
+						comp.writeInt(vetor[i].getQtd());
+					}
+					
+					comp.write(corpo);
+					
+					
+					comp.close();
+					
+					System.out.println("Compactado!");
+					System.out.println("Deseja fazer mais alguma coisa?");
+					break;
+					
+				case "2":
+					System.out.println("Informe o caminho do arquivo");
+					String local = teclado.readLine();
+					
+					RandomAccessFile arqDescomp;
+					try {
+						arqDescomp = new RandomAccessFile(local, "r");
+					}catch(Exception err)
+					{
+						escolha = "0";
+						System.out.println("Caminho nao existe!");
+						System.out.println("Escolha o que quer fazer:");
+						System.out.println("1- Compactar");
+						System.out.println("2- Descompactar");
+						System.out.println("3- Sair");
+						break;
+					}
+					
+					int ponto = local.lastIndexOf(".");
+					String fim = local.substring(ponto);
+					
+					if(!fim.equals(".ica"))
+					{
+						escolha = "0";
+						System.out.println("Arquivo especificado nao esta compactado!");
+						System.out.println("Escolha o que quer fazer:");
+						System.out.println("1- Compactar");
+						System.out.println("2- Descompactar");
+						System.out.println("3- Sair");
+						break;
+					}
+					
+					arqDescomp.seek(0);
+					
+					vetor = new No[256];
+					
+					System.out.println("Lendo...");
+					
+					int lixo = arqDescomp.readInt(); // 4 bytes
+					int qtdExt = arqDescomp.readInt(); // 4 bytes
+					char[] charExt = new char[qtdExt];
+					for(int i = 0; i < qtdExt; i++)// 2 bytes
+						charExt[i] = arqDescomp.readChar(); 
+					String ext = new String(charExt);
+					int qtdChars = arqDescomp.readInt(); // 4 bytes
+					
+					for(int i = 0; i < qtdChars; i++) // 5 bytes
+					{
+						vetor[i] = new No(arqDescomp.readByte(), arqDescomp.readInt());
+					}
+					
+					byte[] aDescomp = new byte[(int)arqDescomp.length() - (12 + (qtdExt*2) + (qtdChars*5)) - lixo];
+					
+					arqDescomp.read(aDescomp);
+					arqDescomp.close();
+					
+					System.out.println("Montando Arvore...");
+					arvore = new Arvore();
+					arvore.montarArvore(vetor);
+					
+					System.out.println("Gerando codigo...");
+					codigo = new Codigo[256];
+					montarCod();
+					
+					System.out.println("Scanando...");
+					
+					BitSet arquivao = new BitSet();
+					int posBit = 0;
+					
+					for(int i = 0; i < aDescomp.length; i++)
+					{
+						for(int j = 0; j < 8; j++)
+						{
+							if(getBit(aDescomp[i], j) == 1)
+								arquivao.set(posBit, true);
+							else
+								arquivao.set(posBit, false);
+							
+							posBit++;
+						}
+					}
+					
+					posBit = 0;
+					No atual = arvore.getRaiz();
+					
+					local = local.substring(0, ponto);
+					local += "." + ext;
+					
+					System.out.println("Escrevendo...");
+					
+					RandomAccessFile arquivo = new RandomAccessFile(local, "rw");
+					arquivo.seek(0);
+					
+					for(int i = 0; i <= (arquivao.length()+1); i++)
+					{
+						if (!atual.ehFolha())
+						{
+							if(arquivao.get(posBit))
+								atual = atual.getDir();
+							else
+								atual = atual.getEsq();
+							
+						posBit++;
+						}
+						else // folha
+						{
+							arquivo.writeByte(atual.getCod());
+							atual = arvore.getRaiz();
+							i--;
+						}
+					}
+					
+					arquivo.close();
+					
+					System.out.println("Descompactado!");
+					System.out.println("Deseja fazer mais alguma coisa?");
+					break;
+					
+					
+				case "3":
+					System.out.println("Ate a proxima!");
+					return;
+					
+				default:
+					System.out.println("Dígito inválido");
+					break;				
+				}		
 				
-				posBit = 0;
-				No atual = arvore.getRaiz();
-				
-				int ponto = caminho.lastIndexOf(".");
-				String fim = local.substring(ponto);
-				local = local.substring(0, extencao);
-				local += fim;
-				
-				RandomAccessFile comp = new RandomAccessFile(compactado, "rw");
-				comp.seek(comp.length());
-				
-				for(int i = 0; i < arquivao.length(); i++)
-				{
-					if (atual.getCod() == -1)
-						if(arquivao.get(posBit))
-							atual = atual.getDir();
-						else
-							atual = atual.getEsq();
-					else // folha
-						
-				}
-				
-				break;
-			default:
-				System.out.println("Dígito inválido");
-				break;				
-			}		
-			
-		
+			}
 		}catch(Exception erro)
 		{
 			erro.printStackTrace();
@@ -163,7 +244,7 @@ public class Programa {
 		int posBit = 0;
 		for (int i = 0; i < arvore.getRaiz().getQtd(); i++)
 		{
-			String bits = codigo[arquivo[i]].getCod();
+			String bits = codigo[arquivo[i]+128].getCod();
 						
 			for (int j = 0; j < bits.length(); j++)
 			{
@@ -175,6 +256,8 @@ public class Programa {
 				posBit++;
 			}
 		}
+		
+		poop = posBit%8;
 		
 		corpo = bit.toByteArray();
 	}
@@ -199,7 +282,7 @@ public class Programa {
 			if(vetor[i] == null)
 				break;
 			
-			ret += (codigo[vetor[i].getCod()].getCod().length())*(vetor[i].getQtd());
+			ret += (codigo[vetor[i].getCod()+128].getCod().length())*(vetor[i+128].getQtd());
 		}
 		
 		return ret;
@@ -212,10 +295,10 @@ public class Programa {
 		try {
 		
 		for(int i = 0; i < arquivo.length; i++)
-			if (vetor[arquivo[i]] == null)
-				vetor[arquivo[i]] = new No(arquivo[i], 1);
+			if (vetor[arquivo[i]+128] == null)
+				vetor[arquivo[i]+128] = new No(arquivo[i], 1);
 			else
-				vetor[arquivo[i]].addQtd();
+				vetor[arquivo[i]+128].addQtd();
 		
 		arvore = new Arvore();
 		arvore.montarArvore(vetor);
@@ -237,8 +320,8 @@ public class Programa {
 	protected static void montarCod(No raiz, Codigo c)
 	{
 		if (raiz != null)
-			if(raiz.getCod() != -1)
-				codigo[raiz.getCod()] = (Codigo)c.clone();
+			if(raiz.ehFolha())
+				codigo[raiz.getCod()+128] = (Codigo)c.clone();
 			else
 			{
 				c.mais("0");

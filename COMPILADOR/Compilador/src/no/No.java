@@ -5,13 +5,14 @@ public class No implements Comparable<No> {
 	protected No esq = null;
 	protected int qtd = 0;
 	protected byte cod;
+	protected boolean folha;
 	
 	public No (No dir, No esq, int qtd) //construtor destinado aos nós não folhas
 	{
 		this.dir = dir;
 		this.esq = esq;
 		this.qtd = qtd;
-		this.cod = -1; //se o nó tiver o código como -1 significas que não possui um código
+		this.folha = false; //se o nó tiver o código como -1 significas que não possui um código
 	}
 	
 	public No (byte cod, int qtd) throws Exception //construtor destinado aos nós folhas
@@ -19,11 +20,12 @@ public class No implements Comparable<No> {
 		if (qtd < 1)
 			throw new Exception("Quantidade inválida");
 		
-		if (cod < 0 || cod > 255)
+		if (cod < -128 || cod > 127)
 			throw new Exception("Código inválido");
 		
 		this.cod = cod;
 		this.qtd = qtd;
+		this.folha = true;
 	}
 	
 	public No(No no) 
@@ -32,8 +34,14 @@ public class No implements Comparable<No> {
 		this.cod = no.cod;
 		this.dir = no.dir;
 		this.esq = no.esq;
+		this.folha = no.folha;
 	}
 
+	public Boolean ehFolha()
+	{
+		return folha;
+	}
+	
 	public No getDir()
 	{
 		return dir;
