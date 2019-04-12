@@ -1,2 +1,2 @@
-# Compilador-ED
+# Compactador-ED
 compilador phoda
