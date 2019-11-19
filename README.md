@@ -1,2 +1,2 @@
-# Compactador-ED
-compilador phoda
+# Compactador
+File archiver using Huffman code :inbox_tray:
